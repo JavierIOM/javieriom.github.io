@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sunday Lunch Gaming Hub</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎲</text></svg>">
     <style>
         * {
             margin: 0;
@@ -38,16 +39,45 @@
             content: '🎲';
             font-size: 3rem;
             position: absolute;
-            left: 50%;
-            top: -20px;
-            transform: translateX(-50%);
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
             animation: bounce 2s infinite;
         }
 
+        .header::after {
+            content: '🃏🂡🂮';
+            font-size: 2rem;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: cardShuffle 3s infinite ease-in-out;
+        }
+
+        @keyframes cardShuffle {
+            0%, 100% { 
+                transform: translateY(-50%) rotate(0deg);
+                opacity: 1;
+            }
+            25% { 
+                transform: translateY(-60px) rotate(-5deg);
+                opacity: 0.8;
+            }
+            50% { 
+                transform: translateY(-50%) rotate(5deg);
+                opacity: 0.9;
+            }
+            75% { 
+                transform: translateY(-40px) rotate(-2deg);
+                opacity: 0.7;
+            }
+        }
+
         @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-            40% { transform: translateX(-50%) translateY(-10px); }
-            60% { transform: translateX(-50%) translateY(-5px); }
+            0%, 20%, 50%, 80%, 100% { transform: translateY(-50%) translateX(0); }
+            40% { transform: translateY(-60px) translateX(0); }
+            60% { transform: translateY(-55px) translateX(0); }
         }
 
         h1 {
