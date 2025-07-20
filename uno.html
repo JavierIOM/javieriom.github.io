@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Byways Uno League</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            font-weight: 300;
+        }
+
+        .tournament-section {
+            background: white;
+            margin-bottom: 40px;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e8ecef;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tournament-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .tournament-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .tournament-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+            width: 100%;
+        }
+
+        .leaderboard {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+        }
+
+        .leaderboard h3 {
+            color: #495057;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.4rem;
+        }
+
+        .player-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #dee2e6;
+            font-weight: 500;
+        }
+
+        .player-row:last-child {
+            border-bottom: none;
+        }
+
+        .player-name {
+            font-size: 1.1rem;
+            color: #2c3e50;
+        }
+
+        .player-points {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .overall-stats {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .overall-stats h2 {
+            margin-bottom: 25px;
+            font-size: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .tournament-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .chart-container {
+                height: 300px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Byways Uno League</h1>
+            <p>Championship Tournament Results & Statistics</p>
+        </div>
+
+        <div class="tournament-section">
+            <h2 class="tournament-title">Byways Uno League (Base Tournament)</h2>
+            <div class="tournament-content">
+                <div class="leaderboard">
+                    <h3>Final Standings</h3>
+                    <div class="player-row">
+                        <span class="player-name">🥇 Rachel</span>
+                        <span class="player-points">5</span>
+                    </div>
+                    <div class="player-row">
+                        <span class="player-name">🥈 Leanne</span>
+                        <span class="player-points">4</span>
+                    </div>
+                    <div class="player-row">
+                        <span class="player-name">🥉 Javier</span>
+                        <span class="player-points">3</span>
+                    </div>
+                    <div class="player-row">
+                        <span class="player-name">Alex</span>
+                        <span class="player-points">3</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chart1"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="tournament-section">
+            <h2 class="tournament-title">2022 Uno Championship</h2>
+            <div class="tournament-content">
+                <div class="leaderboard">
+                    <h3>Final Standings</h3>
+                    <div class="player-row">
+                        <span class="player-name">🥇 Rachel</span>
+                        <span class="player-points">14</span>
+                    </div>
+                    <div class="player-row">
+                        <span class="player-name">🥈 Leanne</span>
+                        <span class="player-points">9</span>
+                    </div>
+                    <div class="player-row">
+                        <span class="player-name">🥉 Alex</span>
+                        <span class="player-points">8</span>
+                    </div>
+                    <div class="player-row">
+                        <span class="player-name">Javier</span>
+                        <span class="player-points">4</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chart2"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="tournament-section">
+            <h2 class="tournament-title">2023 Uno Championship</h2>
+            <div class="tournament-content">
+                <div class="leaderboard">
+                    <h3>Final Standings</h3>
+                    <div class="player-row">
+                        <span class="player-name">🥇 Leanne</span>
+                        <span class="player-points">2</span>
+                    </div>
+                    <div class="player-row">
+                        <span class="player-name">🥈 Alex</span>
+                        <span class="player-points">2</span>
+                    </div>
+                    <div class="player-row">
+                        <span class="player-name">🥉 Rachel</span>
+                        <span class="player-points">1</span>
+                    </div>
+                    <div class="player-row">
+                        <span class="player-name">Javier</span>
+                        <span class="player-points">1</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chart3"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="tournament-section">
+            <h2 class="tournament-title">2024 German UNO Championship</h2>
+            <div class="tournament-content">
+                <div class="leaderboard">
+                    <h3>Final Standings</h3>
+                    <div class="player-row">
+                        <span class="player-name">🥇 Alex</span>
+                        <span class="player-points">7</span>
+                    </div>
+                    <div class="player-row">
+                        <span class="player-name">🥈 Javier</span>
+                        <span class="player-points">5</span>
+                    </div>
+                    <div class="player-row">
+                        <span class="player-name">🥉 Leanne</span>
+                        <span class="player-points">3</span>
+                    </div>
+                    <div class="player-row">
+                        <span class="player-name">Rachel</span>
+                        <span class="player-points">3</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chart4"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="tournament-section">
+            <h2 class="tournament-title">2025 Dutch UNO Championship</h2>
+            <div class="tournament-content">
+                <div class="leaderboard">
+                    <h3>Final Standings</h3>
+                    <div class="player-row">
+                        <span class="player-name">🥇 Alex</span>
+                        <span class="player-points">12</span>
+                    </div>
+                    <div class="player-row">
+                        <span class="player-name">🥈 Rachel</span>
+                        <span class="player-points">11</span>
+                    </div>
+                    <div class="player-row">
+                        <span class="player-name">🥉 Javier</span>
+                        <span class="player-points">10</span>
+                    </div>
+                    <div class="player-row">
+                        <span class="player-name">Leanne</span>
+                        <span class="player-points">9</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chart5"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="overall-stats">
+            <h2>🏆 League Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Tournaments</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Players</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">148</div>
+                    <div class="stat-label">Total Points</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">37</div>
+                    <div class="stat-label">Average Points</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Color scheme for players
+        const playerColors = {
+            'Rachel': '#e74c3c',
+            'Leanne': '#3498db',
+            'Alex': '#2ecc71',
+            'Javier': '#f39c12'
+        };
+
+        // Tournament data
+        const tournaments = [
+            {
+                id: 'chart1',
+                data: {
+                    'Rachel': 5,
+                    'Leanne': 4,
+                    'Javier': 3,
+                    'Alex': 3
+                }
+            },
+            {
+                id: 'chart2',
+                data: {
+                    'Rachel': 14,
+                    'Leanne': 9,
+                    'Alex': 8,
+                    'Javier': 4
+                }
+            },
+            {
+                id: 'chart3',
+                data: {
+                    'Rachel': 1,
+                    'Leanne': 2,
+                    'Alex': 2,
+                    'Javier': 1
+                }
+            },
+            {
+                id: 'chart4',
+                data: {
+                    'Javier': 5,
+                    'Leanne': 3,
+                    'Rachel': 3,
+                    'Alex': 7
+                }
+            },
+            {
+                id: 'chart5',
+                data: {
+                    'Javier': 10,
+                    'Leanne': 9,
+                    'Rachel': 11,
+                    'Alex': 12
+                }
+            }
+        ];
+
+        // Create charts
+        tournaments.forEach(tournament => {
+            const ctx = document.getElementById(tournament.id).getContext('2d');
+            const labels = Object.keys(tournament.data);
+            const data = Object.values(tournament.data);
+            const colors = labels.map(player => playerColors[player]);
+
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors,
+                        borderColor: colors.map(color => color + 'CC'),
+                        borderWidth: 3,
+                        hoverOffset: 15
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: 'white',
+                            bodyColor: 'white',
+                            borderColor: '#fff',
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.parsed * 100) / total).toFixed(1);
+                                    return `${context.label}: ${context.parsed} points (${percentage}%)`;
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        animateRotate: true,
+                        animateScale: true,
+                        duration: 1500,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
