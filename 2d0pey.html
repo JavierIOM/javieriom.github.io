@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>2D0PEY - Amateur Radio Station</title>
+    <style>
+        body {
+            background: #000080 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAdgAAAHYBTnsmCAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAABYSURBVBiVY2RgYPjPQAQgahNZmxgbGxsZGRkZGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgY/jMwMDAwAABkBQQB9p8fvwAAAABJRU5ErkJggg==') repeat;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            color: #00FFFF;
+            margin: 0;
+            padding: 10px;
+        }
+        
+        .header {
+            text-align: center;
+            background: linear-gradient(45deg, #FF0000, #FFFF00, #00FF00, #00FFFF, #0000FF, #FF00FF);
+            background-size: 400% 400%;
+            animation: rainbow 3s ease infinite;
+            padding: 20px;
+            border: 5px solid #FFFF00;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .blink {
+            animation: blink 1s linear infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .content-box {
+            background: #800080;
+            border: 3px solid #FFFF00;
+            margin: 10px;
+            padding: 15px;
+            box-shadow: 5px 5px 0px #FF0000;
+        }
+        
+        .visitor-counter {
+            background: #000000;
+            color: #00FF00;
+            border: 2px solid #00FF00;
+            padding: 10px;
+            margin: 10px 0;
+            text-align: center;
+            font-family: "Courier New", monospace;
+        }
+        
+        .construction {
+            text-align: center;
+            background: #FFFF00;
+            color: #000000;
+            padding: 10px;
+            border: 3px solid #FF0000;
+            margin: 10px 0;
+        }
+        
+        .nav-buttons {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .nav-button {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            border: 3px solid #FFD93D;
+            color: #000000;
+            padding: 10px 20px;
+            margin: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            border-radius: 15px;
+            box-shadow: 3px 3px 0px #6BCF7F;
+        }
+        
+        .nav-button:hover {
+            transform: scale(1.1);
+            background: linear-gradient(45deg, #4ECDC4, #FF6B6B);
+        }
+        
+        .flame-text {
+            background: linear-gradient(45deg, #FF4500, #FFD700, #FF4500);
+            background-size: 400% 400%;
+            animation: flame 2s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        @keyframes flame {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .equipment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        
+        .equipment-table th, .equipment-table td {
+            border: 2px solid #FFFF00;
+            padding: 8px;
+            text-align: left;
+            background: #000080;
+        }
+        
+        .equipment-table th {
+            background: #FF0000;
+            color: #FFFFFF;
+        }
+        
+        .footer {
+            text-align: center;
+            background: #008000;
+            border: 3px solid #FFFF00;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .spinning {
+            display: inline-block;
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .marquee-container {
+            background: #FF0000;
+            border: 2px solid #FFFF00;
+            margin: 10px 0;
+            padding: 5px;
+            overflow: hidden;
+        }
+        
+        marquee {
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="blink">📻 WELCOME TO 2D0PEY 📻</h1>
+        <h2>Amateur Radio Station</h2>
+        <p class="flame-text">★ ON THE AIR SINCE 1998 ★</p>
+    </div>
+    
+    <div class="visitor-counter">
+        <p>🔢 VISITOR COUNTER 🔢</p>
+        <p style="font-size: 24px;">000457</p>
+        <p>You are visitor number <span class="blink">457</span>!</p>
+    </div>
+    
+    <div class="marquee-container">
+        <marquee>🎯 WELCOME TO MY AMATEUR RADIO HOME PAGE! 🎯 73s AND BEST DX! 🎯 CHECK OUT MY QSL COLLECTION! 🎯 CQ CQ CQ! 🎯</marquee>
+    </div>
+    
+    <div class="construction">
+        <p><span class="spinning">🚧</span> <strong class="blink">UNDER CONSTRUCTION</strong> <span class="spinning">🚧</span></p>
+        <p>New antenna photos coming soon!</p>
+    </div>
+    
+    <div class="nav-buttons">
+        <a href="#" class="nav-button">🏠 HOME</a>
+        <a href="#" class="nav-button">📻 EQUIPMENT</a>
+        <a href="#" class="nav-button">📮 QSL CARDS</a>
+        <a href="#" class="nav-button">🌍 DX LOG</a>
+        <a href="#" class="nav-button">📧 EMAIL ME</a>
+    </div>
+    
+    <div class="content-box">
+        <h2 class="flame-text">📡 About 2D0PEY 📡</h2>
+        <p>Welcome to my amateur radio homepage! I'm <strong>Dave</strong>, licensed since 1987 and loving every minute of it! My call sign is <span class="blink">2D0PEY</span> and I operate from grid square IO83.</p>
+        
+        <p>I'm particularly interested in:</p>
+        <ul>
+            <li>🌍 DXing (especially rare islands!)</li>
+            <li>📡 VHF/UHF weak signal work</li>
+            <li>🛰️ Satellite communications</li>
+            <li>🔧 Homebrew equipment building</li>
+            <li>🎯 Contest operation</li>
+        </ul>
+    </div>
+    
+    <div class="content-box">
+        <h2 class="flame-text">📻 My Radio Shack 📻</h2>
+        <table class="equipment-table">
+            <tr>
+                <th>Equipment</th>
+                <th>Model</th>
+                <th>Power</th>
+            </tr>
+            <tr>
+                <td>HF Transceiver</td>
+                <td>Yaesu FT-897D</td>
+                <td>100W</td>
+            </tr>
+            <tr>
+                <td>VHF/UHF Rig</td>
+                <td>Icom IC-9700</td>
+                <td>75W</td>
+            </tr>
+            <tr>
+                <td>HF Antenna</td>
+                <td>G5RV Dipole @ 40ft</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>VHF/UHF</td>
+                <td>Diamond X-50A Vertical</td>
+                <td>-</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="content-box">
+        <h2 class="flame-text">🏆 Recent DX Achievements 🏆</h2>
+        <p class="blink">★ NEW! ★</p>
+        <ul>
+            <li>🎯 Worked JA0XYZ on 20m SSB - my first Japan contact!</li>
+            <li>🌴 QSL confirmed from 3D2AG (Rotuma Island)</li>
+            <li>📡 Completed 144MHz square #47 via aircraft scatter</li>
+            <li>🛰️ New DXCC on AO-91 satellite</li>
+        </ul>
+    </div>
+    
+    <div class="content-box">
+        <h2 class="flame-text">📮 QSL Information 📮</h2>
+        <p>I QSL 100% via the bureau or direct. For direct QSLs, please send to:</p>
+        <div style="background: #FFFF00; color: #000000; padding: 10px; border: 2px solid #FF0000; text-align: center;">
+            <strong>Dave Smith, 2D0PEY<br>
+            123 Radio Lane<br>
+            Hamtown, UK<br>
+            AB12 3CD</strong>
+        </div>
+        <p class="blink">Please include SAE + IRC for direct QSL!</p>
+    </div>
+    
+    <div class="content-box">
+        <h2 class="flame-text">🔗 Cool Ham Radio Links 🔗</h2>
+        <ul>
+            <li>📻 <a href="#" style="color: #00FFFF;">QRZ.com Lookup</a></li>
+            <li>🌍 <a href="#" style="color: #00FFFF;">DX Summit Spots</a></li>
+            <li>📡 <a href="#" style="color: #00FFFF;">AMSAT Satellite Info</a></li>
+            <li>🎯 <a href="#" style="color: #00FFFF;">Contest Calendar</a></li>
+            <li>⚡ <a href="#" style="color: #00FFFF;">Solar Weather</a></li>
+        </ul>
+    </div>
+    
+    <div class="marquee-container">
+        <marquee direction="right">📡 73s FROM 2D0PEY! 📡 HOPE TO WORK YOU SOON ON THE BANDS! 📡 KEEP THE FREQUENCY CLEAR! 📡</marquee>
+    </div>
+    
+    <div class="footer">
+        <p><strong>Last updated:</strong> <span class="blink">July 20, 2025</span></p>
+        <p>📧 Email: 2d0pey@hamradio.net</p>
+        <p>🌟 Member of: RSGB, AMSAT-UK, Local Contest Group</p>
+        <p>Best viewed in Netscape Navigator 4.0+ at 800x600!</p>
+        <div style="margin-top: 15px;">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCA4MCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjRkYwMDAwIi8+Cjx0ZXh0IHg9IjQwIiB5PSIxNCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSJibGFjayIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TkVUIE5PVzwvdGV4dD4KICA8L3N2Zz4=" style="border: 2px solid yellow;">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCA4MCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMDBGRjAwIi8+Cjx0ZXh0IHg9IjQwIiB5PSIxNCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEwIiBmaWxsPSJibGFjayIgdGV4dC1hbmNob3I9Im1pZGRsZSI+R0VPQ0lUSUVTPC90ZXh0PgogIDwvc3ZnPg==" style="border: 2px solid yellow;">
+        </div>
+        <p class="blink" style="margin-top: 10px;">73! 📻</p>
+    </div>
+</body>
+</html>
