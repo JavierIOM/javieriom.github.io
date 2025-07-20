@@ -1,1 +1,41 @@
-Iv moved this to the site root.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="refresh" content="5; URL='https://javieriom.github.io'" />
+  <title>Redirecting...</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #1e1e1e;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
+    .spinner {
+      margin: 20px;
+      width: 50px;
+      height: 50px;
+      border: 5px solid #ffffff;
+      border-top: 5px solid #00bfff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .message {
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <div class="spinner"></div>
+  <div class="message">Redirecting you shortly...</div>
+  <p>If you're not redirected automatically, <a href="https://javieriom.github.io" style="color:#00bfff;">click here</a>.</p>
+</body>
+</html>
