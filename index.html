@@ -361,108 +361,172 @@
     </div>
 
     <script>
-        // Board game data
-        const gameData = `Board Game Title,Category
-Clue Giant Mystery Game,Family
-Telestrations,Party
-Diamonsters,Filler
-Villagers,Strategy
-Villagers: Shifting Seasons,Strategy
-Streets,Strategy
-Stay Cool,Party
-Spyfall,Social Deduction
-Spyfall 2,Social Deduction
-Pandemic: Hot Zone – North America,Cooperative
-Forbidden Desert,Cooperative
-Sonar,Uncategorized
-Cobra Paw,Filler
-Decrypto,Deduction
-Railroad Ink (pink crate),Uncategorized
-Flash Point: Fire Rescue,Cooperative
-PitchCar,Dexterity
-Pandemic Legacy: Season 1,Cooperative
-Knights,Uncategorized
-Shadows: Amsterdam,Deduction
-Codenames,Party
-Railroad Ink (white box),Uncategorized
-Tiny Epic Zombies,Adventure
-Tiny Epic Galaxies,Adventure
-12 Thieves,Uncategorized
-Cactus,Filler
-Wombat Rescue,Strategy
-Four,Filler
-Daybreak,Cooperative
-Buzzed Out,Party
-Takenoko,Strategy
-Takenoko: Chibis,Strategy
-The Quacks of Quedlinburg,Adventure
-Dice Forge,Filler
-Potion Explosion,Uncategorized
-Dungeon Drop,Adventure
-Cryptid: Urban Legends,Uncategorized
-Snakesss,Party
-Wingspan,Family
-Dixit,Uncategorized
-Century: Golem Edition,Strategy
-What Next?,Strategy
-Cascadia,Strategy
-Nice Buns,Family
-The Grimm Forest,Strategy
-Cluedo (Classic Detective Game),Family
-Suspicion,Deduction
-Disney Villainous: Wicked to the Core,Uncategorized
-River Dragons (wooden box),Strategy
-Dodo,Family
-Die of the Dead,Adventure
-Tiny Goblins,Adventure
-EXIT: The Game (multiple),Escape Room
-The Magic Labyrinth,Family
-Paranormal Detectives,Cooperative
-Mysterium Park,Cooperative
-Labyrinth,Family
-Patchwork,Family
-Shout!,Party
-Thinking Words,Party
-Flamecraft,Strategy
-Jaws,Deduction
-King of Tokyo,Family
-King of Tokyo: Power Up,Family
-Ice Cool,Dexterity
-Ice Cool 2,Dexterity
-Horrified,Uncategorized
-Azul,Family
-The Crew: The Quest for Planet Nine,Cooperative
-Forbidden Island,Cooperative
-Ticket to Ride: Europe,Family
-Cartographers,Strategy
-Akropolis,Uncategorized
-Jaipur,Filler
-One Night Ultimate Werewolf,Party
-Odin's Ravens,Filler
-Cluedo Vintage Book Box,Family
-Codenames Duet,Party
-Mr. Jack,Deduction
-MicroMacro: Crime City,Deduction
-Azul: Summer Pavilion,Family
-Azul: Stained Glass of Sintra,Family
-Santorini: Pantheon Edition,Family
-Dungeon Academy,Adventure`;
-
-        // Parse CSV data
-        function parseCSV(csvData) {
-            const lines = csvData.trim().split('\n');
-            const games = {};
-            
-            for (let i = 1; i < lines.length; i++) {
-                const [title, category] = lines[i].split(',');
-                if (!games[category]) {
-                    games[category] = [];
-                }
-                games[category].push(title);
-            }
-            
-            return games;
-        }
+        // Complete board game data with all games properly formatted
+        const games = {
+            'Family': [
+                'Clue Giant Mystery Game',
+                'Wingspan',
+                'Nice Buns',
+                'Cluedo (Classic Detective Game)',
+                'Dodo',
+                'The Magic Labyrinth',
+                'Labyrinth',
+                'Patchwork',
+                'King of Tokyo',
+                'King of Tokyo: Power Up',
+                'Azul',
+                'Ticket to Ride: Europe',
+                'Cluedo Vintage Book Box',
+                'Azul: Summer Pavilion',
+                'Azul: Stained Glass of Sintra',
+                'Santorini: Pantheon Edition',
+                'Uno Super Mario',
+                'Dos',
+                'Simon',
+                'Old fashioned pegs',
+                'King of New York'
+            ],
+            'Party': [
+                'Telestrations',
+                'Stay Cool',
+                'Codenames',
+                'Buzzed Out',
+                'Snakesss',
+                'Shout!',
+                'Thinking Words',
+                'One Night Ultimate Werewolf',
+                'Codenames Duet',
+                'Captain Bluff',
+                'Obama Lama',
+                'Blankety Blank the Board Game',
+                'Cards Against Christmas',
+                'Cards Against Humanity',
+                'Cards Against Humanity: Family Edition',
+                'Catch Phrase the Card Game',
+                'Don\'t Be Dik Dik',
+                'Cockroach Poker',
+                'Fairies Rule Goblins Drool',
+                'Herd Mentality',
+                'More or Less',
+                'Things He Will Being Searched For',
+                'Poetry for Neanderthals',
+                'Stupid Deaths',
+                'We\'re All Going to Die',
+                'Exploding Kittens',
+                'Bears Versus Babies',
+                'Goat Lords',
+                'Bang: The Dice Game'
+            ],
+            'Strategy': [
+                'Villagers',
+                'Villagers: Shifting Seasons',
+                'Streets',
+                'Wombat Rescue',
+                'Takenoko',
+                'Takenoko: Chibis',
+                'Century: Golem Edition',
+                'What Next?',
+                'Cascadia',
+                'The Grimm Forest',
+                'River Dragons (wooden box)',
+                'Flamecraft',
+                'Cartographers',
+                'Diplomacy',
+                'Mahjong',
+                'Solitaire',
+                'Mensa',
+                'Boss Monster'
+            ],
+            'Cooperative': [
+                'Pandemic: Hot Zone – North America',
+                'Forbidden Desert',
+                'Flash Point: Fire Rescue',
+                'Pandemic Legacy: Season 1',
+                'Daybreak',
+                'Paranormal Detectives',
+                'Mysterium Park',
+                'The Crew: The Quest for Planet Nine',
+                'Forbidden Island'
+            ],
+            'Deduction': [
+                'Decrypto',
+                'Shadows: Amsterdam',
+                'Suspicion',
+                'Jaws',
+                'Mr. Jack',
+                'MicroMacro: Crime City',
+                'Cluedo',
+                'Cluedo Scooby-Doo',
+                'Sherlock Holmes Consulting Detective',
+                'Scene of the Crime',
+                'Impostor',
+                'Micro Macro Crime City',
+                'Fangs – Werewolves vs'
+            ],
+            'Adventure': [
+                'Tiny Epic Zombies',
+                'Tiny Epic Galaxies',
+                'The Quacks of Quedlinburg',
+                'Dungeon Drop',
+                'Die of the Dead',
+                'Tiny Goblins',
+                'Dungeon Academy',
+                'Indiana Jones: Sons of Adventure',
+                'Jumanji',
+                'Plague Incorporated',
+                'Dark Souls: The Board Game',
+                'Adventure Games – The Dungeon'
+            ],
+            'Filler': [
+                'Diamonsters',
+                'Cobra Paw',
+                'Cactus',
+                'Four',
+                'Dice Forge',
+                'Jaipur',
+                'Odin\'s Ravens'
+            ],
+            'Dexterity': [
+                'PitchCar',
+                'Ice Cool',
+                'Ice Cool 2',
+                'Pictionary',
+                'Pictionary Air',
+                'Grabbolo'
+            ],
+            'Social Deduction': [
+                'Spyfall',
+                'Spyfall 2'
+            ],
+            'Escape Room': [
+                'EXIT: The Game (multiple)',
+                'Unlock Series (Epic)',
+                'Unlock Series (Mystery)',
+                'Unlock Series (Secret)',
+                'Unlock Series (Star Wars)',
+                'Exit Series (Amsterdam)',
+                'Exit Series (Cabin)',
+                'Exit Series (Island)',
+                'Exit Series (Labyrinth)',
+                'Exit Series (Gate Between Worlds)'
+            ],
+            'Uncategorized': [
+                'Sonar',
+                'Railroad Ink (pink crate)',
+                'Knights',
+                'Railroad Ink (white box)',
+                '12 Thieves',
+                'Potion Explosion',
+                'Cryptid: Urban Legends',
+                'Dixit',
+                'Disney Villainous: Wicked to the Core',
+                'Horrified',
+                'Akropolis',
+                'Jurassic Park',
+                'Back to the Future: Dice Through Time',
+                'Crystal Maze the Board Game'
+            ]
+        };
 
         // Category icons and display names
         const categoryConfig = {
@@ -479,7 +543,7 @@ Dungeon Academy,Adventure`;
             'Uncategorized': { icon: '❓', class: 'uncategorized' }
         };
 
-        let allGames = {};
+        let allGames = games;
         let filteredGames = {};
         let gameStatuses = {}; // Track play status for each game
 
@@ -491,11 +555,9 @@ Dungeon Academy,Adventure`;
         };
 
         function initializeGames() {
-            allGames = parseCSV(gameData);
-            
             // Initialize all games as not played
-            Object.values(allGames).forEach(games => {
-                games.forEach(game => {
+            Object.values(allGames).forEach(gameList => {
+                gameList.forEach(game => {
                     if (!gameStatuses[game]) {
                         gameStatuses[game] = 'not-played';
                     }
@@ -519,7 +581,7 @@ Dungeon Academy,Adventure`;
         }
 
         function updateStats() {
-            const totalGames = Object.values(filteredGames).reduce((sum, games) => sum + games.length, 0);
+            const totalGames = Object.values(filteredGames).reduce((sum, gameList) => sum + gameList.length, 0);
             const totalCategories = Object.keys(filteredGames).length;
             
             let playedCount = 0;
@@ -544,8 +606,8 @@ Dungeon Academy,Adventure`;
             const sortedCategories = Object.entries(filteredGames)
                 .sort(([,a], [,b]) => b.length - a.length);
 
-            sortedCategories.forEach(([category, games]) => {
-                if (games.length === 0) return;
+            sortedCategories.forEach(([category, gameList]) => {
+                if (gameList.length === 0) return;
 
                 const config = categoryConfig[category] || { icon: '❓', class: 'uncategorized' };
                 
@@ -556,7 +618,7 @@ Dungeon Academy,Adventure`;
                     'want-to-play': 0
                 };
                 
-                games.forEach(game => {
+                gameList.forEach(game => {
                     categoryStats[gameStatuses[game]]++;
                 });
                 
@@ -567,10 +629,10 @@ Dungeon Academy,Adventure`;
                     <div class="category-header">
                         <span class="category-icon">${config.icon}</span>
                         <span class="category-title">${category}</span>
-                        <span class="game-count">${games.length}</span>
+                        <span class="game-count">${gameList.length}</span>
                     </div>
                     <ul class="games-list">
-                        ${games.map(game => {
+                        ${gameList.map(game => {
                             const status = gameStatuses[game] || 'not-played';
                             const statusConfig = playStatuses[status];
                             return `
@@ -600,8 +662,8 @@ Dungeon Academy,Adventure`;
                 filteredGames = { ...allGames };
             } else {
                 filteredGames = {};
-                Object.entries(allGames).forEach(([category, games]) => {
-                    const matchingGames = games.filter(game => 
+                Object.entries(allGames).forEach(([category, gameList]) => {
+                    const matchingGames = gameList.filter(game => 
                         game.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         category.toLowerCase().includes(searchTerm.toLowerCase())
                     );
