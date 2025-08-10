@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telemetry Data Viewer</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .summary {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .summary h3 {
+            margin-top: 0;
+            color: #1976d2;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .timestamp {
+            font-weight: bold;
+            color: #2196F3;
+        }
+        .event-type {
+            font-weight: bold;
+        }
+        .telemetry { color: #4CAF50; }
+        .rxkey { color: #FF9800; }
+        .local-rx-keyup { 
+            background-color: #4CAF50 !important; 
+            color: white !important; 
+            font-weight: bold;
+        }
+        .rxunkey { color: #FF5722; }
+        .txkey { color: #9C27B0; }
+        .txunkey { color: #E91E63; }
+        .linkdisc { color: #607D8B; }
+        .time-gap {
+            background-color: #fff3cd !important;
+            border-left: 4px solid #ffc107;
+        }
+        .parameters {
+            font-family: monospace;
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Telemetry Data Analysis</h1>
+        
+        <div class="summary">
+            <h3>Data Summary</h3>
+            <p><strong>Time Range:</strong> 2025-08-10 19:00:32.66 to 19:04:05.41 (Duration: ~3.5 minutes)</p>
+            <p><strong>Total Events:</strong> 54</p>
+            <p><strong>Event Types:</strong></p>
+            <ul>
+                <li><span class="telemetry">TELEMETRY</span>: 15 events</li>
+                <li><span class="rxkey">RXKEY</span>: 12 events</li>
+                <li><span class="rxunkey">RXUNKEY</span>: 11 events</li>
+                <li><span class="txkey">TXKEY</span>: 7 events</li>
+                <li><span class="txunkey">TXUNKEY</span>: 8 events</li>
+                <li><span class="linkdisc">LINKDISC</span>: 1 event</li>
+            </ul>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Parsed DateTime</th>
+                    <th>Event Type</th>
+                    <th>ID/Channel</th>
+                    <th>Command/Action</th>
+                    <th>Parameters</th>
+                    <th>Gap (ms)</th>
+                </tr>
+            </thead>
+            <tbody id="data-table">
+                <!-- Data will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const rawData = `2025081019003266,TELEMETRY,65834,REMDISC,63183
+2025081019003267,TELEMETRY,65834,LINKUNKEY(T),(700,1100,150,2048)
+2025081019003622,RXKEY,2196
+2025081019003734,RXUNKEY,2196
+2025081019003835,TELEMETRY,65834,LINKUNKEY(T),(700,1100,150,2048)
+2025081019003956,RXKEY,2196
+2025081019010162,RXUNKEY,2196
+2025081019010168,RXKEY,2196
+2025081019010180,RXUNKEY,2196
+2025081019010184,RXKEY,2196
+2025081019020700,RXUNKEY,2196
+2025081019020801,TELEMETRY,65834,LINKUNKEY(T),(700,1100,150,2048)
+2025081019020872,TXUNKEY,MAIN
+2025081019020886,RXKEY,2196
+2025081019020886,TXKEY,MAIN
+2025081019025250,RXUNKEY,2196
+2025081019025351,TELEMETRY,65834,LINKUNKEY(T),(700,1100,150,2048)
+2025081019025422,TXUNKEY,MAIN
+2025081019025520,RXKEY,MAIN
+2025081019025521,TXKEY,2196
+2025081019025616,TELEMETRY,65834,UNKEY*
+2025081019025616,RXUNKEY,MAIN
+2025081019025616,TXKEY,MAIN
+2025081019025617,TXUNKEY,2196
+2025081019025818,TELEMETRY,65834,UNKEY(T),(1633,0,50,3000)(0,0,80,0)(1209,0,50,3000)
+2025081019025893,TXUNKEY,MAIN
+2025081019030270,RXKEY,2196
+2025081019030286,TXKEY,MAIN
+2025081019030286,RXUNKEY,2196
+2025081019030286,RXKEY,2196
+2025081019030924,RXUNKEY,2196
+2025081019031025,TELEMETRY,65834,LINKUNKEY(T),(700,1100,150,2048)
+2025081019031096,TXUNKEY,MAIN
+2025081019031393,RXKEY,2196
+2025081019031393,TXKEY,MAIN
+2025081019031454,RXUNKEY,2196
+2025081019031460,RXKEY,2196
+2025081019031510,RXUNKEY,2196
+2025081019031555,TELEMETRY,65834,LINKUNKEY(T),(700,1100,150,2048)
+2025081019031626,TXUNKEY,MAIN
+2025081019032478,RXKEY,2196
+2025081019032478,TXKEY,MAIN
+2025081019033798,RXUNKEY,2196
+2025081019033798,LINKDISC,2196
+2025081019033899,TELEMETRY,65834,LINKUNKEY(T),(700,1100,150,2048)
+2025081019034138,TELEMETRY,65834,REMDISC,2196
+2025081019034858,TELEMETRY,65834,COMPLETE(T),(1000,0,100,2048)(0,0,100,0)(1000,0,100,2048)
+2025081019034943,TXUNKEY,MAIN
+2025081019035301,RXKEY,MAIN
+2025081019035429,TELEMETRY,65834,UNKEY*
+2025081019035429,RXUNKEY,MAIN
+2025081019035429,TXKEY,MAIN
+2025081019035631,TELEMETRY,65834,UNKEY(T),(660,880,150,2048)
+2025081019035702,TXUNKEY,MAIN
+2025081019040157,RXKEY,MAIN
+2025081019040268,TELEMETRY,65834,UNKEY*
+2025081019040268,RXUNKEY,MAIN
+2025081019040268,TXKEY,MAIN
+2025081019040470,TELEMETRY,65834,UNKEY(T),(660,880,150,2048)
+2025081019040541,TXUNKEY,MAIN`;
+
+        function parseTimestamp(timestamp) {
+            // Format: 2025081019003266 = YYYYMMDDHHMMSSFFF
+            const year = timestamp.substr(0, 4);
+            const month = timestamp.substr(4, 2);
+            const day = timestamp.substr(6, 2);
+            const hour = timestamp.substr(8, 2);
+            const minute = timestamp.substr(10, 2);
+            const second = timestamp.substr(12, 2);
+            const millisecond = timestamp.substr(14, 2);
+            
+            return {
+                formatted: `${year}-${month}-${day} ${hour}:${minute}:${second}.${millisecond}`,
+                timestamp: parseInt(timestamp)
+            };
+        }
+
+        function parseRow(line) {
+            const parts = line.split(',');
+            const timestamp = parts[0];
+            let eventType = parts[1];
+            
+            let id = '', command = '', parameters = '';
+            
+            if (parts.length >= 3) {
+                id = parts[2];
+            }
+            if (parts.length >= 4) {
+                command = parts[3];
+            }
+            if (parts.length >= 5) {
+                parameters = parts.slice(4).join(',');
+            }
+            
+            // Check for RXKEY with MAIN and rename it
+            let displayEventType = eventType;
+            let cssClass = eventType.toLowerCase();
+            if (eventType === 'RXKEY' && id === 'MAIN') {
+                displayEventType = 'Local RX Keyup';
+                cssClass = 'local-rx-keyup';
+            }
+            
+            return {
+                timestamp: timestamp,
+                parsed: parseTimestamp(timestamp),
+                eventType: eventType,
+                displayEventType: displayEventType,
+                cssClass: cssClass,
+                id: id,
+                command: command,
+                parameters: parameters
+            };
+        }
+
+        function populateTable() {
+            const tbody = document.getElementById('data-table');
+            const lines = rawData.trim().split('\n');
+            const rows = lines.map(parseRow);
+            
+            let previousTimestamp = null;
+            
+            rows.forEach((row, index) => {
+                const tr = document.createElement('tr');
+                
+                // Calculate time gap
+                let gap = '';
+                if (previousTimestamp) {
+                    const currentMs = row.parsed.timestamp;
+                    const prevMs = previousTimestamp;
+                    const diff = currentMs - prevMs;
+                    gap = diff.toString();
+                    
+                    // Highlight significant gaps (>1000ms)
+                    if (diff > 1000) {
+                        tr.classList.add('time-gap');
+                    }
+                }
+                
+                // Apply event type styling
+                tr.classList.add(row.cssClass);
+                
+                tr.innerHTML = `
+                    <td class="timestamp">${row.timestamp}</td>
+                    <td>${row.parsed.formatted}</td>
+                    <td class="event-type ${row.cssClass}">${row.displayEventType}</td>
+                    <td>${row.id}</td>
+                    <td>${row.command}</td>
+                    <td class="parameters">${row.parameters}</td>
+                    <td>${gap}</td>
+                `;
+                
+                tbody.appendChild(tr);
+                previousTimestamp = row.parsed.timestamp;
+            });
+        }
+
+        // Initialize the table when page loads
+        document.addEventListener('DOMContentLoaded', populateTable);
+    </script>
+</body>
+</html>
