@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ham Radio Callsign Lookup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+
+        .search-section {
+            padding: 40px;
+            background: white;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results-section {
+            padding: 0 40px 40px;
+        }
+
+        .callsign-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .callsign-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .callsign-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .lookup-time {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+            min-width: 80px;
+            flex-shrink: 0;
+        }
+
+        .info-value {
+            color: #333;
+            flex: 1;
+        }
+
+        .error {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            margin-left: 10px;
+        }
+
+        .clear-btn:hover {
+            box-shadow: 0 10px 20px rgba(220, 53, 69, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .search-form {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .search-section, .results-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎙️ Ham Radio Callsign Lookup</h1>
+            <p>Search QRZ.com database for amateur radio operator information</p>
+        </div>
+
+        <div class="search-section">
+            <form class="search-form" id="searchForm">
+                <div class="input-group">
+                    <label for="callsign">Callsign</label>
+                    <input type="text" id="callsign" placeholder="Enter callsign (e.g., W1AW)" required>
+                </div>
+                <div style="display: flex; align-items: end; gap: 10px;">
+                    <button type="submit" class="btn" id="searchBtn">Search</button>
+                    <button type="button" class="btn clear-btn" id="clearBtn">Clear All</button>
+                </div>
+            </form>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Looking up callsign...</p>
+            </div>
+        </div>
+
+        <div class="results-section" id="results"></div>
+    </div>
+
+    <script>
+        let lookupHistory = [];
+
+        // Add event listeners after DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.getElementById('searchForm');
+            const callsignInput = document.getElementById('callsign');
+            const searchBtn = document.getElementById('searchBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            
+            // Form submission handler
+            searchForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                console.log('Form submitted'); // Debug log
+                
+                const callsign = callsignInput.value.trim().toUpperCase();
+                console.log('Callsign:', callsign); // Debug log
+                
+                if (!callsign) {
+                    alert('Please enter a callsign');
+                    return;
+                }
+
+                const loading = document.getElementById('loading');
+                
+                // Show loading state
+                searchBtn.disabled = true;
+                searchBtn.textContent = 'Searching...';
+                loading.style.display = 'block';
+
+                try {
+                    // Simulate API delay
+                    await new Promise(resolve => setTimeout(resolve, 800));
+                    
+                    const callsignData = await lookupQRZ(callsign);
+                    console.log('Callsign data:', callsignData); // Debug log
+                    
+                    if (callsignData) {
+                        addToHistory(callsign, callsignData);
+                        displayResults();
+                    } else {
+                        showError(`No information found for callsign ${callsign}`);
+                    }
+                } catch (error) {
+                    console.error('Error:', error); // Debug log
+                    showError(`Error looking up ${callsign}: ${error.message}`);
+                } finally {
+                    searchBtn.disabled = false;
+                    searchBtn.textContent = 'Search';
+                    loading.style.display = 'none';
+                    callsignInput.value = '';
+                }
+            });
+
+            // Clear button handler
+            clearBtn.addEventListener('click', function() {
+                lookupHistory = [];
+                document.getElementById('results').innerHTML = '<div class="no-results">No lookups performed yet. Enter a callsign above to get started.</div>';
+                callsignInput.focus();
+            });
+
+            // Focus on input when page loads
+            callsignInput.focus();
+        });
+
+        // Real QRZ.com API lookup function
+        async function lookupQRZ(callsign) {
+            const API_URL = 'qrz_proxy.php'; // Change this to your PHP file path
+            
+            try {
+                const response = await fetch(`${API_URL}?callsign=${encodeURIComponent(callsign)}`);
+                const result = await response.json();
+                
+                if (result.success && result.data) {
+                    return result.data;
+                } else {
+                    console.error('QRZ API Error:', result.error);
+                    return null;
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+                throw new Error('Network error connecting to QRZ.com');
+            }
+        }
+
+        async function simulateQRZLookup(callsign) {
+            // Simulate QRZ.com lookup with sample data
+            const sampleData = {
+                'W1AW': {
+                    call: 'W1AW',
+                    fname: 'ARRL',
+                    name: 'HEADQUARTERS STATION',
+                    addr1: '225 Main Street',
+                    addr2: 'Newington, CT 06111',
+                    country: 'United States',
+                    grid: 'FN31pr',
+                    class: 'CLUB',
+                    expires: '12/31/2025',
+                    email: 'w1aw@arrl.org'
+                },
+                'VE3ABC': {
+                    call: 'VE3ABC',
+                    fname: 'John',
+                    name: 'Smith',
+                    addr1: '123 Maple Street',
+                    addr2: 'Toronto, ON M1M 1M1',
+                    country: 'Canada',
+                    grid: 'FN03',
+                    class: 'ADVANCED',
+                    expires: '06/15/2026'
+                },
+                'G0XYZ': {
+                    call: 'G0XYZ',
+                    fname: 'Sarah',
+                    name: 'Johnson',
+                    addr1: '456 High Street',
+                    addr2: 'London, England',
+                    country: 'United Kingdom',
+                    grid: 'IO91',
+                    class: 'FULL',
+                    expires: '08/20/2027'
+                }
+            };
+
+            // Return sample data if callsign matches, otherwise generate random data
+            if (sampleData[callsign]) {
+                return sampleData[callsign];
+            }
+
+            // Generate semi-realistic data for demo purposes
+            if (callsign.length >= 3) {
+                const firstNames = ['John', 'Mary', 'Robert', 'Jennifer', 'Michael', 'Linda', 'William', 'Elizabeth', 'David', 'Barbara'];
+                const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez'];
+                
+                return {
+                    call: callsign,
+                    fname: firstNames[Math.floor(Math.random() * firstNames.length)],
+                    name: lastNames[Math.floor(Math.random() * lastNames.length)],
+                    addr1: `${Math.floor(Math.random() * 9999) + 1} ${['Main', 'Oak', 'Pine', 'Elm', 'Cedar'][Math.floor(Math.random() * 5)]} Street`,
+                    addr2: `${['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'][Math.floor(Math.random() * 5)]}, ${['NY', 'CA', 'IL', 'TX', 'AZ'][Math.floor(Math.random() * 5)]} ${Math.floor(Math.random() * 90000) + 10000}`,
+                    country: 'United States',
+                    grid: `${String.fromCharCode(65 + Math.floor(Math.random() * 18))}${String.fromCharCode(65 + Math.floor(Math.random() * 18))}${Math.floor(Math.random() * 100).toString().padStart(2, '0')}`,
+                    class: ['NOVICE', 'GENERAL', 'ADVANCED', 'EXTRA'][Math.floor(Math.random() * 4)],
+                    expires: `${Math.floor(Math.random() * 12) + 1}/${Math.floor(Math.random() * 28) + 1}/${2025 + Math.floor(Math.random() * 5)}`
+                };
+            }
+
+            return null;
+        }
+
+        function addToHistory(callsign, data) {
+            const timestamp = new Date();
+            lookupHistory.unshift({
+                callsign,
+                data,
+                timestamp
+            });
+
+            // Keep only last 10 lookups
+            if (lookupHistory.length > 10) {
+                lookupHistory = lookupHistory.slice(0, 10);
+            }
+        }
+
+        function displayResults() {
+            const resultsDiv = document.getElementById('results');
+            
+            if (lookupHistory.length === 0) {
+                resultsDiv.innerHTML = '<div class="no-results">No lookups performed yet. Enter a callsign above to get started.</div>';
+                return;
+            }
+
+            let html = '';
+            
+            lookupHistory.forEach(entry => {
+                const { callsign, data, timestamp } = entry;
+                
+                html += `
+                    <div class="callsign-card">
+                        <div class="card-header">
+                            <div class="callsign-title">${data.call}</div>
+                            <div class="lookup-time">Looked up: ${timestamp.toLocaleString()}</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="info-grid">
+                                ${data.fname && data.name ? `<div class="info-item"><span class="info-label">Name:</span><span class="info-value">${data.fname} ${data.name}</span></div>` : ''}
+                                ${data.addr1 ? `<div class="info-item"><span class="info-label">Address:</span><span class="info-value">${data.addr1}${data.addr2 ? '<br>' + data.addr2 : ''}</span></div>` : ''}
+                                ${data.state ? `<div class="info-item"><span class="info-label">State:</span><span class="info-value">${data.state}</span></div>` : ''}
+                                ${data.zip ? `<div class="info-item"><span class="info-label">ZIP:</span><span class="info-value">${data.zip}</span></div>` : ''}
+                                ${data.country ? `<div class="info-item"><span class="info-label">Country:</span><span class="info-value">${data.country}</span></div>` : ''}
+                                ${data.grid ? `<div class="info-item"><span class="info-label">Grid:</span><span class="info-value">${data.grid}</span></div>` : ''}
+                                ${data.class ? `<div class="info-item"><span class="info-label">License:</span><span class="info-value">${data.class}</span></div>` : ''}
+                                ${data.expdate ? `<div class="info-item"><span class="info-label">Expires:</span><span class="info-value">${data.expdate}</span></div>` : ''}
+                                ${data.email ? `<div class="info-item"><span class="info-label">Email:</span><span class="info-value"><a href="mailto:${data.email}">${data.email}</a></span></div>` : ''}
+                                ${data.url ? `<div class="info-item"><span class="info-label">Website:</span><span class="info-value"><a href="${data.url}" target="_blank">${data.url}</a></span></div>` : ''}
+                                ${data.aliases ? `<div class="info-item"><span class="info-label">Aliases:</span><span class="info-value">${data.aliases}</span></div>` : ''}
+                                ${data.trustee ? `<div class="info-item"><span class="info-label">Trustee:</span><span class="info-value">${data.trustee}</span></div>` : ''}
+                                ${data.born ? `<div class="info-item"><span class="info-label">Born:</span><span class="info-value">${data.born}</span></div>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            resultsDiv.innerHTML = html;
+        }
+
+        function showError(message) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `<div class="error">${message}</div>` + resultsDiv.innerHTML;
+        }
+
+        // Allow Enter key to trigger search - removed duplicate event listener
+    </script>
+</body>
+</html>
